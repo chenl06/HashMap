@@ -13,7 +13,7 @@ public class ConsoleInterface {
     }
 
     public boolean askIfPlayerShouldBeAComputer(int playerNr) {
-        printer.println("Player " + playerNr + ": Do you want to be a computer player (AI)? (true/false)");
+        printer.println("Player " + playerNr + ": Do you want to be a player? (true/false)");
         return scanner.nextBoolean();
     }
 

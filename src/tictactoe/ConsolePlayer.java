@@ -16,7 +16,7 @@ public class ConsolePlayer implements Player {
         boolean validInput = false;
         while (!validInput) {
             try {
-                out.println("Player " + piece + ", enter your move (row and column separated by a space):");
+                out.println("It's " + piece + "'s turn, enter your move (y and x separated by a space):");
                 int row = scanner.nextInt();
                 int column = scanner.nextInt();
                 Board.Position position = new Board.Position(row, column);

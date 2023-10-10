@@ -1,9 +1,10 @@
 package tictactoe;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class Board {
+public class Board implements Cloneable {
     private Piece[][] board;
     public static int MAX_COLUMNS = 3;
     public static int MAX_ROWS = 3;
@@ -79,10 +80,10 @@ public class Board {
      * @throws CloneNotSupportedException ex
      */
     public Board clone() throws CloneNotSupportedException {
-        Board clonedBoard = (Board) super.clone();
-        clonedBoard.board = new Piece[MAX_ROWS][MAX_COLUMNS];
+        Board clonedBoard = new Board();
+        // Copy the pieces from the original board to the cloned board
         for (int row = 0; row < MAX_ROWS; row++) {
-            System.arraycopy(this.board[row], 0, clonedBoard.board[row], 0, MAX_COLUMNS);
+            if (MAX_COLUMNS >= 0) System.arraycopy(this.board[row], 0, clonedBoard.board[row], 0, MAX_COLUMNS);
         }
         return clonedBoard;
     }
@@ -117,7 +118,7 @@ public class Board {
             throw new IllegalMoveException("Invalid row or column");
         }
         if (board[position.row][position.column] != Piece.NONE) {
-            throw new IllegalMoveException("Position is already occupied");
+            throw  new IllegalMoveException("Position is already occupied");
         }
         if (piece == Piece.NONE) {
             throw new IllegalMoveException("Cannot play Piece.NONE");
@@ -130,7 +131,7 @@ public class Board {
      * @return
      */
     public Collection<Position> emptyPositions() {
-        Collection<Position> emptyPositions = new HashSet<>();
+        Collection<Position> emptyPositions = new ArrayList<>();
         for (int row = 0; row < MAX_ROWS; row++) {
             for (int col = 0; col < MAX_COLUMNS; col++) {
                 if (board[row][col] == Piece.NONE) {
@@ -146,14 +147,8 @@ public class Board {
      * @return state
      */
     public State getGameState() {
-        Board.State check = State.INCOMPLETE;
-        if (checkBoardFull()) {
-            check = State.DRAW;
-        }
-        else if (checkWinner() != State.INCOMPLETE) {
-            check = checkWinner();
-        }
-        return check; // Placeholder
+        State winner = checkWinner();
+        return (winner != State.INCOMPLETE) ? winner : (checkBoardFull() ? State.DRAW : State.INCOMPLETE);
     }
 
     /**
@@ -164,7 +159,11 @@ public class Board {
         StringBuilder sb = new StringBuilder();
         for (int row = 0; row < MAX_ROWS; row++) {
             for (int col = 0; col < MAX_COLUMNS; col++) {
-                sb.append(board[row][col]).append(" ");
+                if (board[row][col] == Piece.NONE) {
+                    sb.append("-").append(" ");
+                }else {
+                    sb.append(board[row][col]).append(" ");
+                }
             }
             sb.append("\n");
         }

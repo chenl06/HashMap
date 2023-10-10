@@ -1,4 +1,8 @@
 package tictactoe;
+/**
+ * @author Edward Oh
+ * @author Chen Luo
+ */
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -13,10 +17,20 @@ public class Main {
 
         // Create a ConsoleInterface for input and output
         ConsoleInterface consoleInterface = new ConsoleInterface(scanner, printer);
-
-        // Create two players (human and computer)
-        Player player1 = new ConsolePlayer(scanner, printer, Board.Piece.X);
-        Player player2 = new ConsolePlayer(scanner, printer, Board.Piece.O);
+        Player player1 = null;
+        Player player2 = null;
+        if (consoleInterface.askIfPlayerShouldBeAComputer(1)){
+            player1 = new ConsolePlayer(scanner, printer, Board.Piece.X);
+        }
+        else {
+            player1 = new ComputerPlayer(Board.Piece.X);
+        }
+        if (consoleInterface.askIfPlayerShouldBeAComputer(2)){
+            player2 = new ConsolePlayer(scanner, printer, Board.Piece.O);
+        }
+        else {
+            player2 = new ComputerPlayer(Board.Piece.O);
+        }
         Player currentPlayer = player1;
         boolean gameEnded = false;
         // Print the current board
